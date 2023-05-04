@@ -62,3 +62,7 @@ jobs:
     - name: Run Tests
       run: dotnet test ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln --configuration ${{env.BUILD_CONFIGURATION}} /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} --no-build --verbosity normal
       
+    - name: Push generated package to GitHub registry
+      if: endsWith(github.ref, '/dev')
+      run: dotnet nuget push ./**/*.nupkg  --source https://nuget.pkg.github.com/threenine/index.json   --api-key ${{ github.token }}
+    
