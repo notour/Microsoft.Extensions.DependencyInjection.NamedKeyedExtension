@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+		<Nullable>enable</Nullable>
+
+		<Title>Autofac.Extensions.DependencyInjection.NamedKeyed</Title>
+		<Product>Autofac.Extensions.DependencyInjection.NamedKeyed</Product>
+		<Description>
+			AutoFac implementation Microsoft.Extensions.DependencyInjection.
+			Add resolution by key or named
+		</Description>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+	</PropertyGroup>
+
+	<Import Project="$(SolutionDir)\SharedProjectInfo.csproj" />
+
+	<ItemGroup>
+		<None Include="..\..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Microsoft.Extensions.DependencyInjection.NamedKeyed\Microsoft.Extensions.DependencyInjection.NamedKeyed.csproj" />
+	</ItemGroup>
+
+</Project>
