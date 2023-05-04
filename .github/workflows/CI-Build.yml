@@ -40,10 +40,10 @@ jobs:
 
     - uses: actions/checkout@v3
       with:
-            fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
   
-    - name: git unshallow
-      run: git fetch --unshallow
+    #- name: git unshallow
+    #  run: git fetch --unshallow
 
     - name: Determine Version
       id: gitversion
