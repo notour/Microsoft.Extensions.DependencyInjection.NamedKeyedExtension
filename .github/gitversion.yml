@@ -1,36 +1,66 @@
 branches:
-  develop:
-    regex: ^dev(elop)?(ment)?$
-    tag: beta
-    assembly-versioning-scheme: MajorMinorPatch
-    assembly-file-versioning-scheme: MajorMinorPatch
-    assembly-informational-format: '{InformationalVersion}'
-
-    mode: ContinuousDeployment
-    update-build-number: true
-      
-    is-release-branch: false
-    is-mainline: main
-    
-    # use an environment variable if available or a fallback value otherwise
-    assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 42}'
-    
   main:
     regex: ^master$|^main$
-    next-version: 1.0
-    assembly-versioning-scheme: MajorMinorPatch
-    assembly-file-versioning-scheme: MajorMinorPatch
-    assembly-informational-format: '{InformationalVersion}'
-
     mode: ContinuousDelivery
-    increment: Minor
-    
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  release:
+    regex: ^releases?[/-]
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
     is-release-branch: true
-    is-mainline: false
-    
-    # use an environment variable if available or a fallback value otherwise
-    assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 42}'
-    
-ignore:
-  sha: []
-  
+    pre-release-weight: 1000
+  feature:
+    regex: ^features?[/-]
+    mode: ContinuousDelivery
+    tag: useBranchName
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  pull-request:
+    regex: ^(pull|pull\-requests|pr)[/-]
+    mode: ContinuousDelivery
+    tag: PullRequest
+    increment: Inherit
+    prevent-increment-of-merged-branch-version: false
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  hotfix:
+    regex: ^hotfix(es)?[/-]
+    mode: ContinuousDelivery
+    tag: beta
+    increment: Patch
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  support:
+    regex: ^support[/-]
+    mode: ContinuousDelivery
+    tag: ''
+    increment: Patch
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: false
+    tracks-release-branches: false
+    is-release-branch: false
+  develop:
+    regex: ^dev(elop)?(ment)?$
+    mode: ContinuousDeployment
+    tag: unstable
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
+    track-merge-target: true
+    tracks-release-branches: true
+    is-release-branch: false
