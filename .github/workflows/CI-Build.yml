@@ -63,7 +63,8 @@ jobs:
     - name: Copy nuget pkg
       run: |
         foreach($file in (Get-ChildItem "${{ env.SOLUTION_FILE_PATH }}" -Recurse -Include *.nupkg)) {
-            Copy-Item $file -Destination ${{ env.NuGetDirectory }}
+            Copy-Item $file -Destination "${{ env.NuGetDirectory }}/"
+            echo "Copy '$file' to '${{ env.NuGetDirectory }}/'"
         }
 
     - uses: actions/upload-artifact@v3
