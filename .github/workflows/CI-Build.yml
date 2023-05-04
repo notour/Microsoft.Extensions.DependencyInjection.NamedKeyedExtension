@@ -60,12 +60,18 @@ jobs:
     - name: Run Tests
       run: dotnet test ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln --configuration ${{env.BUILD_CONFIGURATION}} /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} --no-build --verbosity normal
    
+    - name: Copy nuget pkg
+      run: |
+        foreach($file in (Get-ChildItem "${{ env.SOLUTION_FILE_PATH }}" -Recurse -Include *.nupkg)) {
+            Copy-Item $file -Destination ${{ env.NuGetDirectory }}
+        }
+
     - uses: actions/upload-artifact@v3
       with:
         name: nuget
         if-no-files-found: error
         retention-days: 7
-        path: ${{ env.SOLUTION_FILE_PATH }}/**/*.nupkg
+        path: ${{ env.NuGetDirectory }}/*.nupkg
 
   publish_nuget:
     runs-on: windows-latest
@@ -75,7 +81,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: nuget
-          path: ${{ env.NuGetDirectory }}/**/*.nupkg
+          path: ${{ env.NuGetDirectory }}
 
       # Install the .NET SDK indicated in the global.json file
       - name: Setup .NET Core
