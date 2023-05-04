@@ -3,14 +3,11 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: MSBuild
+name: CI-Build-Release-Nuget
 
 on:
-  push:
-    branches: [ "dev" ]
-
   pull_request:
-    branches: [ "dev" ]
+    branches: [ "main" ]
 
 env:
   # Path to the solution file relative to the root of the project.
