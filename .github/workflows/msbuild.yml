@@ -8,6 +8,7 @@ name: MSBuild
 on:
   push:
     branches: [ "dev" ]
+
   pull_request:
     branches: [ "dev" ]
 
@@ -41,11 +42,5 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}*.sln
-      
-    - name: Save state
-      run: echo "{name}={value}" >> $GITHUB_STATE
-
-    - name: Set output
-      run: echo "{name}={value}" >> $GITHUB_OUTPUT
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln
       
