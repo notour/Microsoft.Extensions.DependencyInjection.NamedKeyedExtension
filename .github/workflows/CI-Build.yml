@@ -42,18 +42,12 @@ jobs:
       with:
          fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
   
-    #- name: git unshallow
-    #  run: git fetch --unshallow
-
     - name: Determine Version
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.7
       with:
           useConfigFile: true
           configFilePath: ./.github/gitversion.yml
-
-    #- name: Add MSBuild to PATH
-    #  uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
@@ -65,9 +59,14 @@ jobs:
     
     - name: Run Tests
       run: dotnet test ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln --configuration ${{env.BUILD_CONFIGURATION}} /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} --no-build --verbosity normal
-    
+   
+  pack_nuget:
+    runs-on: windows-latest
+    needs: [ build]
+    steps:
+ 
     - name: Nuget pack
-      run: dotnet pack {{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln --configuration ${{env.BUILD_CONFIGURATION}} --output ${{ env.NuGetDirectory }}
+      run: dotnet pack ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln --configuration ${{env.BUILD_CONFIGURATION}} --output ${{ env.NuGetDirectory }}
 
     - uses: actions/upload-artifact@v3
       with:
@@ -78,7 +77,7 @@ jobs:
 
   publish_nuget:
     runs-on: windows-latest
-    needs: [ build]
+    needs: [ pack_nuget ]
     steps:
   
       - uses: actions/download-artifact@v3
