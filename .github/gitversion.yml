@@ -1,0 +1,37 @@
+branches:
+  develop:
+    regex: ^dev(elop)?(ment)?$
+    tag: beta
+    next-version: 1.0
+    assembly-versioning-scheme: MajorMinorPatch
+    assembly-file-versioning-scheme: MajorMinorPatch
+    assembly-informational-format: '{InformationalVersion}'
+
+    mode: ContinuousDeployment
+    update-build-number: true
+      
+    is-release-branch: false
+    is-mainline: main
+    
+    # use an environment variable if available or a fallback value otherwise
+    assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 42}'
+    
+  main:
+    regex: ^master$|^main$
+    next-version: 1.0
+    assembly-versioning-scheme: MajorMinorPatch
+    assembly-file-versioning-scheme: MajorMinorPatch
+    assembly-informational-format: '{InformationalVersion}'
+
+    mode: ContinuousDelivery
+    increment: Minor
+    
+    is-release-branch: true
+    is-mainline: false
+    
+    # use an environment variable if available or a fallback value otherwise
+    assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 42}'
+    
+ignore:
+  sha: []
+  
