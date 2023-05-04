@@ -9,53 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: ./src/
-
-  # Configuration type to build.
-  # You can convert this to a build matrix if you need coverage of multiple configuration types.
-  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
-  BUILD_CONFIGURATION: Release
-
-permissions:
-  contents: read
+include: '/CI-Build.yml'
 
 jobs:
   build:
-    runs-on: windows-latest
-    
-    steps:
-
-    - name: Install GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.7
-      with:
-          versionSpec: '5.x'
-
-    - uses: actions/checkout@v3
-  
-    - name: git unshallow
-      run: git fetch --unshallow
-
-    - name: Determine Version
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.7
-      with:
-          useConfigFile: true
-          configFilePath: ./.github/gitversion.yml
-
-    #- name: Add MSBuild to PATH
-    #  uses: microsoft/setup-msbuild@v1.0.2
-
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet restore ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln
-
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: dotnet build ${{env.SOLUTION_FILE_PATH}}Microsoft.Extensions.DependencyInjection.NamedKeyed.sln --configuration ${{env.BUILD_CONFIGURATION}}  /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} /p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }} /p:InformationalVersion=${{ steps.gitversion.outputs.InformationalVersion }} --no-restore
-
-
-    - name: Run Tests
-      run: dotnet test --configuration ${{env.BUILD_CONFIGURATION}} /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} --no-build --verbosity normal
-      
+    - name: Push generated package to GitHub registry
+      run: dotnet nuget push ./**/*.nupkg  --source https://nuget.pkg.github.com/threenine/index.json   --api-key ${{ github.token }}
