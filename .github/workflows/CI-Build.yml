@@ -62,9 +62,10 @@ jobs:
    
     - name: Copy nuget pkg
       run: |
+        New-Item -Path "${{ github.workspace}}" -Name "nuget" -ItemType "directory"
         foreach($file in (Get-ChildItem "${{ env.SOLUTION_FILE_PATH }}" -Recurse -Include *.nupkg)) {
             Copy-Item $file.FullName -Destination "${{ env.NuGetDirectory }}"
-            echo "Copy '". $file.FullName ."' to '${{ env.NuGetDirectory }}'"
+            #echo "Copy '". $file.FullName ."' to '${{ env.NuGetDirectory }}'"
         }
 
     - uses: actions/upload-artifact@v3
@@ -72,7 +73,7 @@ jobs:
         name: nuget
         if-no-files-found: error
         retention-days: 7
-        path: ${{ env.NuGetDirectory }}/*.nupkg
+        path: ${{ env.NuGetDirectory }}
 
   publish_nuget:
     runs-on: windows-latest
