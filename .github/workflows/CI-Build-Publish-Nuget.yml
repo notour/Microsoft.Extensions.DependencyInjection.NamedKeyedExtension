@@ -5,7 +5,7 @@
 
 # https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
 
-name: CI-Build
+name: CI-Build-Publish-Nuget
 
 on:
   pull_request:
