@@ -9,6 +9,7 @@
 		<RepositoryUrl>https://github.com/notour/Microsoft.Extensions.DependencyInjection.NamedKeyedExtension</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>dependency;injection;keyed;named;abstraction</PackageTags>
+		<LicenseUrl>https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt</LicenseUrl>
 	</PropertyGroup>
 
 </Project>

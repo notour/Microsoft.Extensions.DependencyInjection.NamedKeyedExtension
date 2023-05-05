@@ -4,15 +4,16 @@
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>Microsoft.Extensions.DependencyInjection.NamedKeyed</Title>
-		<Product>Microsoft.Extensions.DependencyInjection.NamedKeyed</Product>
+		<PackageId>NamedKeyed.Extensions.DependencyInjection</PackageId>
+		<Title>NamedKeyed.Extensions.DependencyInjection</Title>
+		<Product>NamedKeyed.Extensions.DependencyInjection</Product>
 		<Description>
 			Extend Microsoft.Extensions.DependencyInjection.
 			Add resolution by key or named
 		</Description>
 	</PropertyGroup>
 
-	<Import Project="$(SolutionDir)\SharedProjectInfo.csproj"/>
+	<Import Project="$(SolutionDir)\SharedProjectInfo.csproj" />
 
 	<ItemGroup>
 		<None Include="..\..\README.md">
