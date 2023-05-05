@@ -1,9 +1,8 @@
 ﻿namespace Autofac.Extensions.DependencyInjection
 {
-    using Autofac;
     using Autofac.Core;
 
-    using Microsoft.Extensions.DependencyInjection;
+    using NamedKeyed.Extensions.DependencyInjection;
 
     using System;
 
@@ -52,9 +51,7 @@
         public object? GetServiceNamed(Type serviceType, string name)
         {
             if (base.LifetimeScope.TryResolveNamed(name, serviceType, out var service))
-            {
                 return service;
-            }
 
             return default;
         }

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Implementations\Autofac.Extensions.DependencyInjection.NamedKeyed\Autofac.Extensions.DependencyInjection.NamedKeyed.csproj" />
+    <ProjectReference Include="..\..\src\Implementations\NamedKeyed.Autofac.Extensions.DependencyInjection\NamedKeyed.Autofac.Extensions.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>

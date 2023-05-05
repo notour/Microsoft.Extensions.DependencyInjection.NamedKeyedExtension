@@ -3,10 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>enable</Nullable>
-
-		<PackageId>NamedKeyed.Autofac.Extensions.DependencyInjection</PackageId>
-		<Title>NamedKeyed.Autofac.Extensions.DependencyInjection</Title>
-		<Product>NamedKeyed.Autofac.Extensions.DependencyInjection</Product>
 		
 		<Description>
 			AutoFac implementation Microsoft.Extensions.DependencyInjection.
@@ -30,7 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Microsoft.Extensions.DependencyInjection.NamedKeyed\Microsoft.Extensions.DependencyInjection.NamedKeyed.csproj" />
+		<ProjectReference Include="..\..\NamedKeyed.Extensions.DependencyInjection\NamedKeyed.Extensions.DependencyInjection.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -4,6 +4,9 @@
 		<Authors>Notour</Authors>
 		<Company>Notour</Company>
 		<Copyright>Notour</Copyright>
+		<PackageId>$(AssemblyName)</PackageId>
+		<Title>$(AssemblyName)</Title>
+		<Product>$(AssemblyName)</Product>
 		<PackageProjectUrl>https://github.com/notour/Microsoft.Extensions.DependencyInjection.NamedKeyedExtension</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/notour/Microsoft.Extensions.DependencyInjection.NamedKeyedExtension</RepositoryUrl>

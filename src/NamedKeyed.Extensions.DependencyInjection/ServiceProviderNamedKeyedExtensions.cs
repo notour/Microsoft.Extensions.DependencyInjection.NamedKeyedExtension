@@ -1,5 +1,7 @@
 ﻿namespace Microsoft.Extensions.DependencyInjection
 {
+    using NamedKeyed.Extensions.DependencyInjection;
+
     using System;
 
     /// <summary>
@@ -19,10 +21,10 @@
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc cref="ServiceProviderNamedKeyedExtensions.GetRequiredServiceKeyed(IServiceProvider, Type, object)" />
+        /// <inheritdoc cref="GetRequiredServiceKeyed(IServiceProvider, Type, object)" />
         public static TService GetRequiredServiceKeyed<TService>(this IServiceProvider service, object key)
         {
-            return (TService)GetRequiredServiceKeyed(service, typeof(TService), key);
+            return (TService)service.GetRequiredServiceKeyed(typeof(TService), key);
         }
 
         /// <inheritdoc cref="ISupportNamedDependencyProvider.GetRequiredServiceNamed(Type, string)"/>
@@ -35,10 +37,10 @@
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc cref="ServiceProviderNamedKeyedExtensions.GetRequiredServiceNamed(IServiceProvider, Type, string)" />
+        /// <inheritdoc cref="GetRequiredServiceNamed(IServiceProvider, Type, string)" />
         public static TService GetRequiredServiceNamed<TService>(this IServiceProvider service, string name)
         {
-            return (TService)GetRequiredServiceNamed(service, typeof(TService), name);
+            return (TService)service.GetRequiredServiceNamed(typeof(TService), name);
         }
 
         /// <inheritdoc cref="ISupportKeyedDependencyProvider.GetServiceKeyed(Type, object)" />
@@ -51,11 +53,11 @@
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc cref="ServiceProviderNamedKeyedExtensions.GetServiceKeyed(IServiceProvider, Type, object)" />
+        /// <inheritdoc cref="GetServiceKeyed(IServiceProvider, Type, object)" />
         public static TService? GetServiceKeyed<TService>(this IServiceProvider service, object key)
             where TService : class
         {
-            var serviceResult = GetServiceKeyed(service, typeof(TService), key);
+            var serviceResult = service.GetServiceKeyed(typeof(TService), key);
 
             if (serviceResult is TService castService)
                 return castService;
@@ -73,11 +75,11 @@
             throw new NotSupportedException();
         }
 
-        /// <inheritdoc cref="ServiceProviderNamedKeyedExtensions.GetServiceNamed(IServiceProvider, Type, string)" />
+        /// <inheritdoc cref="GetServiceNamed(IServiceProvider, Type, string)" />
         public static TService? GetServiceNamed<TService>(this IServiceProvider service, string name)
             where TService : class
         {
-            var serviceResult = GetServiceNamed(service, typeof(TService), name);
+            var serviceResult = service.GetServiceNamed(typeof(TService), name);
             if (serviceResult is TService castService)
                 return castService;
 
