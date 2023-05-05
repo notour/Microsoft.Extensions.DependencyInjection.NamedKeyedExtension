@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Authors>Notour</Authors>
+		<Company>Notour</Company>
+		<Copyright>Notour</Copyright>
+		<PackageId>$(AssemblyName)</PackageId>
+		<Title>$(AssemblyName)</Title>
+		<Product>$(AssemblyName)</Product>
+		<PackageProjectUrl>https://github.com/notour/Microsoft.Extensions.DependencyInjection.NamedKeyedExtension</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/notour/Microsoft.Extensions.DependencyInjection.NamedKeyedExtension</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>dependency;injection;keyed;named;abstraction</PackageTags>
+		<LicenseUrl>https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt</LicenseUrl>
+	</PropertyGroup>
+
+</Project>

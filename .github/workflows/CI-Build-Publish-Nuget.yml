@@ -1,0 +1,98 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
+
+name: CI-Build-Publish-Nuget
+
+on:
+  release:
+    branches: [ "main" ]
+
+env:
+  # Path to the solution file relative to the root of the project.
+  SOLUTION_FILE_PATH: ./src/
+  SOLUTION_NAME: NamedKeyed.Extensions.DependencyInjection.sln
+
+  # Configuration type to build.
+  # You can convert this to a build matrix if you need coverage of multiple configuration types.
+  # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+  BUILD_CONFIGURATION: Release
+  NuGetDirectory: ${{ github.workspace}}/nuget
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.7
+      with:
+          versionSpec: '5.x'
+
+    - uses: actions/checkout@v3
+      with:
+         fetch-depth: 0 # Get all history to allow automatic versioning using MinVer
+  
+    - name: Determine Version
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.7
+      with:
+          useConfigFile: true
+          configFilePath: ./.github/gitversion.yml
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: dotnet restore ${{env.SOLUTION_FILE_PATH}}${{env.SOLUTION_NAME}}
+
+    - name: Build
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: dotnet build ${{env.SOLUTION_FILE_PATH}}${{env.SOLUTION_NAME}} --configuration ${{env.BUILD_CONFIGURATION}}  /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} /p:AssemblyVersion=${{ steps.gitversion.outputs.AssemblySemVer }} /p:InformationalVersion=${{ steps.gitversion.outputs.InformationalVersion }} --no-restore
+    
+    - name: Run Tests
+      run: dotnet test ${{env.SOLUTION_FILE_PATH}}${{env.SOLUTION_NAME}} --configuration ${{env.BUILD_CONFIGURATION}} /p:Version=${{ steps.gitversion.outputs.AssemblySemVer }} --no-build --verbosity normal
+   
+    - name: Copy nuget pkg
+      run: |
+        New-Item -Path "${{ github.workspace}}" -Name "nuget" -ItemType "directory"
+        foreach($file in (Get-ChildItem "${{ env.SOLUTION_FILE_PATH }}" -Recurse -Include *.nupkg)) {
+            Copy-Item $file.FullName -Destination "${{ env.NuGetDirectory }}"
+            #echo "Copy '". $file.FullName ."' to '${{ env.NuGetDirectory }}'"
+        }
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: nuget
+        if-no-files-found: error
+        retention-days: 7
+        path: ${{ env.NuGetDirectory }}
+
+  publish_nuget:
+    runs-on: windows-latest
+    needs: [ build ]
+    steps:
+  
+      - uses: actions/download-artifact@v3
+        with:
+          name: nuget
+          path: ${{ env.NuGetDirectory }}
+
+      # Install the .NET SDK indicated in the global.json file
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+
+      # Publish all NuGet packages to NuGet.org
+      # Use --skip-duplicate to prevent errors if a package with the same version already exists.
+      # If you retry a failed workflow, already published packages will be skipped without error.
+      - name: Publish NuGet package
+        run: |
+          foreach($file in (Get-ChildItem "${{ env.NuGetDirectory }}" -Recurse -Include *.nupkg)) {
+              dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          }
+    
